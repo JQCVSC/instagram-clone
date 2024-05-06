@@ -1,0 +1,17 @@
+steps:
+  # Install dependencies
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['install']
+
+  # Build the React app
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+
+  # Deploy to Cloud Storage
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', 'rsync', '-r', '-c', '-d', 'build/', 'gs://instagram-clone-files']
+
+substitutions:
+  _BUCKET_NAME: 'instagram-clone-files'
